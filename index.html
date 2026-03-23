@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SellerGrid AI</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body { font-family: 'Inter', sans-serif; }
+.active-tab { background-color: #1e293b; color: white; }
+</style>
+</head>
+
+<body class="bg-slate-50">
+
+<div class="flex h-screen">
+
+<!-- SIDEBAR -->
+<aside class="w-64 bg-slate-900 text-gray-300 flex flex-col justify-between p-6">
+
+  <div>
+    <h1 class="text-white text-lg font-semibold mb-8">SellerGrid</h1>
+
+    <nav class="space-y-2">
+      <div onclick="showSection('dashboard', this)" class="nav-item active-tab px-4 py-2 rounded-lg cursor-pointer">Dashboard</div>
+      <div onclick="showSection('reviews', this)" class="nav-item px-4 py-2 rounded-lg hover:bg-slate-800 cursor-pointer">Reviews</div>
+      <div onclick="showSection('insights', this)" class="nav-item px-4 py-2 rounded-lg hover:bg-slate-800 cursor-pointer">Insights</div>
+    </nav>
+  </div>
+
+  
+
+</aside>
+
+<!-- MAIN -->
+<main class="flex-1 p-8 overflow-y-auto">
+
+<!-- DASHBOARD -->
+<div id="dashboardSection">
+
+  <h2 class="text-2xl font-semibold mb-6">Review Intelligence</h2>
+
+  <!-- KPI -->
+  <div class="grid grid-cols-4 gap-6 mb-8">
+
+    <div class="bg-white p-5 rounded-xl border shadow-sm">
+      <p class="text-sm text-gray-500">Total Reviews</p>
+      <h3 class="text-2xl font-bold">12,450</h3>
+      <p class="text-xs text-green-600">+8.2% this month</p>
+    </div>
+
+    <div class="bg-white p-5 rounded-xl border shadow-sm">
+      <p class="text-sm text-gray-500">Positive</p>
+      <h3 class="text-2xl font-bold text-green-600">71.2%</h3>
+    </div>
+
+    <div class="bg-white p-5 rounded-xl border shadow-sm">
+      <p class="text-sm text-gray-500">Negative</p>
+      <h3 class="text-2xl font-bold text-red-500">16.4%</h3>
+    </div>
+
+    <div class="bg-white p-5 rounded-xl border shadow-sm">
+      <p class="text-sm text-gray-500">Neutral</p>
+      <h3 class="text-2xl font-bold text-gray-500">12.4%</h3>
+    </div>
+
+  </div>
+
+  <!-- CHARTS -->
+  <div class="grid grid-cols-2 gap-6 mb-8">
+
+    <div class="bg-white p-6 rounded-xl border shadow-sm">
+      <h3 class="mb-4 font-medium">Sentiment Distribution</h3>
+      <canvas id="pieChart"></canvas>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl border shadow-sm">
+      <h3 class="mb-4 font-medium">Sentiment Over Time</h3>
+      <canvas id="lineChart"></canvas>
+    </div>
+
+  </div>
+
+  <!-- INSIGHTS -->
+  <h3 class="text-lg font-semibold mb-4">AI Insights</h3>
+
+  <div class="grid grid-cols-3 gap-6">
+
+    <div class="bg-white p-5 rounded-xl border shadow-sm">
+      <h4 class="text-red-500 font-medium mb-2">Top Complaints</h4>
+      <ul class="text-sm text-gray-600">
+        <li>Late delivery</li>
+        <li>Poor packaging</li>
+        <li>Support delay</li>
+      </ul>
+    </div>
+
+    <div class="bg-white p-5 rounded-xl border shadow-sm">
+      <h4 class="text-green-600 font-medium mb-2">Top Positive Mentions</h4>
+      <ul class="text-sm text-gray-600">
+        <li>Product quality</li>
+        <li>Value for money</li>
+        <li>Premium feel</li>
+      </ul>
+    </div>
+
+    <div class="bg-white p-5 rounded-xl border shadow-sm">
+      <h4 class="text-yellow-500 font-medium mb-2">Recommended Actions</h4>
+      <ul class="text-sm text-gray-600">
+        <li>Improve logistics</li>
+        <li>Upgrade packaging</li>
+        <li>Add product photos</li>
+      </ul>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- REVIEWS -->
+<div id="reviewsSection" class="hidden">
+
+  <h2 class="text-2xl font-semibold mb-4">All Reviews</h2>
+
+  <!-- Filters -->
+  <div class="flex gap-4 mb-6">
+    <select class="px-4 py-2 bg-white border rounded-lg">
+      <option>All Platforms</option>
+    </select>
+    <select class="px-4 py-2 bg-white border rounded-lg">
+      <option>All Ratings</option>
+    </select>
+    <select class="px-4 py-2 bg-white border rounded-lg">
+      <option>All Sentiments</option>
+    </select>
+  </div>
+
+  <!-- Reviews List -->
+  <div class="space-y-4">
+
+    <div class="bg-white p-5 rounded-xl border shadow-sm">
+      <span class="text-sm text-red-500">Negative</span>
+      <p class="mt-2">Late delivery and bad packaging</p>
+    </div>
+
+    <div class="bg-white p-5 rounded-xl border shadow-sm">
+      <span class="text-sm text-green-600">Positive</span>
+      <p class="mt-2">Amazing product quality</p>
+    </div>
+
+    <div class="bg-white p-5 rounded-xl border shadow-sm">
+      <span class="text-sm text-yellow-500">Neutral</span>
+      <p class="mt-2">Average experience</p>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- INSIGHTS PAGE -->
+<div id="insightsSection" class="hidden">
+
+  <h2 class="text-2xl font-semibold mb-4">AI Insights</h2>
+
+  <button class="mb-4 px-4 py-2 bg-indigo-600 text-white rounded-lg">
+    Export Report
+  </button>
+
+  <div class="grid grid-cols-2 gap-6">
+
+    <div class="bg-white p-5 rounded-xl border shadow-sm">
+      <h3 class="mb-3 font-medium">Sentiment Distribution</h3>
+      <canvas id="insightChart"></canvas>
+    </div>
+
+    <div class="bg-white p-5 rounded-xl border shadow-sm">
+      <h3 class="mb-3 font-medium">Top Issues</h3>
+      <p class="text-red-500">Late delivery, Packaging issues</p>
+    </div>
+
+  </div>
+
+</div>
+
+</main>
+</div>
+
+<script>
+// Navigation
+function showSection(section, el){
+  document.getElementById("dashboardSection").style.display="none";
+  document.getElementById("reviewsSection").style.display="none";
+  document.getElementById("insightsSection").style.display="none";
+
+  document.getElementById(section+"Section").style.display="block";
+
+  document.querySelectorAll(".nav-item").forEach(i=>i.classList.remove("active-tab"));
+  el.classList.add("active-tab");
+}
+
+// Charts
+new Chart(document.getElementById("pieChart"), {
+  type: "doughnut",
+  data: {
+    labels: ["Positive","Negative","Neutral"],
+    datasets: [{
+      label:"Sentiment",
+      data:[71,16,13],
+      backgroundColor:["#16a34a","#dc2626","#9ca3af"]
+    }]
+  }
+});
+
+new Chart(document.getElementById("lineChart"), {
+  type: "line",
+  data: {
+    labels:["Oct","Nov","Dec","Jan","Feb","Mar"],
+    datasets:[
+      {
+        label:"Positive %",
+        data:[65,70,68,72,75,73],
+        borderColor:"#16a34a"
+      },
+      {
+        label:"Negative %",
+        data:[20,18,22,19,17,18],
+        borderColor:"#dc2626"
+      }
+    ]
+  }
+});
+
+new Chart(document.getElementById("insightChart"), {
+  type: "bar",
+  data: {
+    labels:["Positive","Negative","Neutral"],
+    datasets:[{
+      label:"Reviews",
+      data:[71,16,13],
+      backgroundColor:["#16a34a","#dc2626","#9ca3af"]
+    }]
+  }
+});
+</script>
+
+</body>
+</html>
